@@ -40,8 +40,8 @@ namespace Ecommerce.Infra.Data.Repository
         {
             using (var connection = CreateConnection())
             {
-                string query = $@"SELECT * FROM [dbo].[{_tableName}] 
-                                GO";
+                //string query = $@"SELECT * FROM [dbo].[{_tableName}] GO";
+                string query = BuildSelectDescribed();
 
                 return (await connection.QueryAsync<E>(query)).ToList();
             }
@@ -61,8 +61,7 @@ namespace Ecommerce.Infra.Data.Repository
         {
             using (var connection = CreateConnection())
             {
-                string query = $@"SELECT * FROM [dbo].[{_tableName}] 
-                                 WHERE Id=@Id";
+                string query = $@"SELECT * FROM [dbo].[{_tableName}] WHERE Id=@Id";
 
                 var result = await connection.QuerySingleOrDefaultAsync<E>(query, new { Id = id });
                 if (result == null)

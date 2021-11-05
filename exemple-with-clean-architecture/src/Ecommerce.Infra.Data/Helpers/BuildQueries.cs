@@ -100,5 +100,22 @@ namespace Ecommerce.Infra.Data.Helpers
 
             return selectQuery.ToString();
         }
+
+        protected string BuildSelectDescribed()
+        {
+            var selectQuery = new StringBuilder($"SELECT ");
+
+            var properties = GetListOfProperties();
+            properties.ForEach(property =>
+            {
+                selectQuery.Append($"[{property}], ");
+            });
+
+            selectQuery.Remove(selectQuery.Length - 2, 1);
+            selectQuery.Append($"FROM [dbo].[{_tableName}] ");
+            selectQuery.Append("GO");
+
+            return selectQuery.ToString();
+        }
     }
 }

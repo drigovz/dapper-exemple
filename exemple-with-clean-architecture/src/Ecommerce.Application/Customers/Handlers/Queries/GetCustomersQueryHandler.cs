@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Application.Core;
 using Ecommerce.Application.Customers.Queries;
 using Ecommerce.Application.Notifications;
-using Ecommerce.Domain.Entities;
 using Ecommerce.Domain.Interfaces;
 using MediatR;
 using System.Threading;
@@ -20,10 +19,7 @@ namespace Ecommerce.Application.Customers.Handlers.Queries
             _notification = notification;
         }
 
-        public async Task<GenericResponse> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
-        {
-            var customer = new Customer { };
-            return new GenericResponse { Result = await _repository.GetWithParamsAsync("CreatedAt", "Name", "Email"), };
-        }
+        public async Task<GenericResponse> Handle(GetCustomersQuery request, CancellationToken cancellationToken) =>
+            new GenericResponse { Result = await _repository.GetAllAsync(), };
     }
 }
