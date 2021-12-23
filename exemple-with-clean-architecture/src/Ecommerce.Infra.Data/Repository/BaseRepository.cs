@@ -75,6 +75,8 @@ namespace Ecommerce.Infra.Data.Repository
         {
             using (var connection = CreateConnection())
             {
+                entity.CreatedAt = DateTime.UtcNow;
+
                 var resultId = await connection.InsertAsync(entity);
                 if (resultId > 0)
                 {

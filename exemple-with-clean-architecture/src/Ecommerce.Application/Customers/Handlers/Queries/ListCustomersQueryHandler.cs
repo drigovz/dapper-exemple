@@ -28,7 +28,8 @@ namespace Ecommerce.Application.Customers.Handlers.Queries
             if (!string.IsNullOrEmpty(request.Name) ||
                 !string.IsNullOrEmpty(request.Email) ||
                 !string.IsNullOrEmpty(request.Genre) ||
-                !string.IsNullOrEmpty(request.Status))
+                !string.IsNullOrEmpty(request.Status) ||
+                !string.IsNullOrEmpty(request.Date))
             {
                 filter += "WHERE ";
 
@@ -97,6 +98,32 @@ namespace Ecommerce.Application.Customers.Handlers.Queries
                     {
                         dictionary.Add("@Status", request.Status);
                         filter += "AND Status = UPPER(@Status) \n";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(request.Date))
+                {
+                    if (string.IsNullOrEmpty(request.Name) && string.IsNullOrEmpty(request.Email) && string.IsNullOrEmpty(request.Genre) && string.IsNullOrEmpty(request.Status))
+                        filter += "CAST(CreatedAt AS DATE) ";
+                    else
+                        filter += "AND CAST(CreatedAt AS DATE) ";
+
+                    var parts = request.Date.Split(',');
+                    if (parts.Length > 1)
+                    {
+                        for (int i = 0; i < parts.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                dictionary.Add($"@DateInit", parts[i]);
+                                filter += $"BETWEEN CAST(@DateInit AS DATE) ";
+                            }
+                            else
+                            {
+                                dictionary.Add($"@DateEnd", parts[i]);
+                                filter += $"AND CAST(@DateEnd AS DATE) \n";
+                            }
+                        }
                     }
                 }
             }
