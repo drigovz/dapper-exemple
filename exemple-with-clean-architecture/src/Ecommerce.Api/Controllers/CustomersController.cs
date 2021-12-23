@@ -38,5 +38,9 @@ namespace Ecommerce.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([BindRequired] int id) =>
             Ok(await _mediator.Send(new CustomerRemoveCommand { Id = id }));
+
+        [HttpGet("List")]
+        public async Task<IActionResult> Get([FromQuery] ListCustomersQuery request) =>
+            Ok(await _mediator.Send(request));
     }
 }

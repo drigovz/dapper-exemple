@@ -27,7 +27,7 @@ namespace Ecommerce.Infra.Data.Repository
         private SqlConnection SqlConnection() =>
             new SqlConnection(connection);
 
-        private IDbConnection CreateConnection()
+        protected IDbConnection CreateConnection()
         {
             var _connection = SqlConnection();
             _connection.Open();
